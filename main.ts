@@ -6,9 +6,20 @@ import { join } from "node:path";
 // D for "deadline".
 const entry: string = String.fromCharCode(68);
 
-if (entry.length !== 1 || !/^[A-Z]$/.test(entry)) {
+if (entry.length !== 1) {
   throw new Error(
-    `entry must be exactly one uppercase letter A-Z, got ${JSON.stringify(entry)} (length ${entry.length})`,
+    `entry must be exactly 1 character, got ${JSON.stringify(entry)} (length ${entry.length})`,
+  );
+}
+if (!/^[A-Z]$/.test(entry)) {
+  throw new Error(
+    `entry must be an uppercase letter A-Z, got ${JSON.stringify(entry)} (char code ${entry.charCodeAt(0)})`,
+  );
+}
+const entryBytes: number = Buffer.byteLength(entry, "utf8");
+if (entryBytes !== 1) {
+  throw new Error(
+    `entry must encode to exactly 1 UTF-8 byte, got ${entryBytes} bytes for ${JSON.stringify(entry)}`,
   );
 }
 
